@@ -8,12 +8,13 @@ import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart
 class TodoDetail extends StatefulWidget {
   final String appBarTitle;
   final Todo todo;
+  final bool isEdit;
 
-  TodoDetail(this.todo, this.appBarTitle);
+  TodoDetail(this.todo, this.appBarTitle, this.isEdit);
 
   @override
   State<StatefulWidget> createState() {
-    return TodoDetailState(this.todo, this.appBarTitle);
+    return TodoDetailState(this.todo, this.appBarTitle, this.isEdit);
   }
 }
 
@@ -31,11 +32,12 @@ class TodoDetailState extends State<TodoDetail> {
 
   String appBarTitle;
   Todo todo;
+  bool isEdit;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  TodoDetailState(this.todo, this.appBarTitle);
+  TodoDetailState(this.todo, this.appBarTitle, this.isEdit);
 
   @override
   void initState() {
@@ -138,14 +140,14 @@ class TodoDetailState extends State<TodoDetail> {
                             padding: EdgeInsets.only(bottom: 10),
                             child: Text("Start Date")),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(2)),
-                        child: GestureDetector(
-                            onTap: () => showDatePicker(context, 'start'),
+                      GestureDetector(
+                        onTap: () => showDatePicker(context, 'start'),
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(2)),
                             child: Row(
                               children: <Widget>[
                                 _startDateStr != null && _startDateStr != ''
@@ -182,14 +184,14 @@ class TodoDetailState extends State<TodoDetail> {
                             padding: EdgeInsets.only(bottom: 10),
                             child: Text("End Date")),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(2)),
-                        child: GestureDetector(
-                            onTap: () => showDatePicker(context, 'end'),
+                      GestureDetector(
+                        onTap: () => showDatePicker(context, 'end'),
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(2)),
                             child: Row(
                               children: <Widget>[
                                 _endDateStr != null && _endDateStr != ''
@@ -225,7 +227,7 @@ class TodoDetailState extends State<TodoDetail> {
               child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   child: Text(
-                    'Create Now',
+                    this.isEdit ? 'Edit Now' : 'Create Now',
                     textAlign: TextAlign.center,
                     textScaleFactor: 1,
                     style: TextStyle(color: Colors.white),
@@ -303,25 +305,6 @@ class TodoDetailState extends State<TodoDetail> {
     } else {
       // Failure
       _showAlertDialog('Status', 'Problem Saving Todo');
-    }
-  }
-
-  void _delete() async {
-    moveToLastScreen();
-
-    // Case 1: If user is trying to delete the NEW todo i.e. he has come to
-    // the detail page by pressing the FAB of todoList page.
-    if (todo.id == null) {
-      _showAlertDialog('Status', 'No Todo was deleted');
-      return;
-    }
-
-    // Case 2: User is trying to delete the old todo that already has a valid ID.
-    int result = await helper.deleteTodo(todo.id);
-    if (result != 0) {
-      _showAlertDialog('Status', 'Todo Deleted Successfully');
-    } else {
-      _showAlertDialog('Status', 'Error Occured while Deleting Todo');
     }
   }
 

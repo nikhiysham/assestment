@@ -54,7 +54,7 @@ class TodoListState extends State<TodoList> {
       body: getTodoListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          navigateToDetail(Todo('', '', '', ''), 'Add Todo');
+          navigateToDetail(Todo('', '', '', ''), 'Add Todo', false);
         },
         elevation: 20,
         tooltip: 'Add Todo',
@@ -76,7 +76,7 @@ class TodoListState extends State<TodoList> {
         //     "##this.todoList[position].isCompleted: ${this.todoList[position].isCompleted}");
         return GestureDetector(
             onTap: () {
-              navigateToDetail(this.todoList[position], 'Edit Todo');
+              navigateToDetail(this.todoList[position], 'Edit Todo', true);
             },
             child: Card(
               color: Colors.white,
@@ -254,10 +254,10 @@ class TodoListState extends State<TodoList> {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
-  void navigateToDetail(Todo todo, String title) async {
+  void navigateToDetail(Todo todo, String title, bool isEdit) async {
     bool result =
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return TodoDetail(todo, title);
+      return TodoDetail(todo, title, isEdit);
     }));
 
     if (result == true) {
