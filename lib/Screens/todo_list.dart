@@ -250,7 +250,10 @@ class TodoListState extends State<TodoList> {
   }
 
   void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
+    final snackBar = SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 3),
+    );
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
