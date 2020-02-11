@@ -1,6 +1,6 @@
-# etiqa
+# Title
 
-Etiqa assessment using Flutter framework.
+Assessment using Flutter framework.
 
 ## Getting Started
 
